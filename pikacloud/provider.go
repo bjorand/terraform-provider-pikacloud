@@ -30,5 +30,5 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		Token: d.Get("token").(string),
 	}
 
-	return config.Client(config)
+	return config.Client()
 }

@@ -24,10 +24,9 @@ func resourcePikacloudInstance() *schema.Resource {
 				ForceNew: true,
 			},
 			"hosts": &schema.Schema{
-				Type:     schema.TypeSet,
-				Elem:     schema.Schema{Type: schema.TypeString},
+				Type:     schema.TypeList,
+				Elem:     &schema.Schema{Type: schema.TypeString},
 				Required: true,
-				Set:      schema.HashString,
 			},
 		},
 	}
@@ -39,7 +38,7 @@ func resourcePikacloudInstanceCreate(d *schema.ResourceData, meta interface{}) e
 	// Create the new instance
 	newInstance := &gopikacloud.InstanceCreateRequest{
 		Region: d.Get("region").(int),
-		Hosts:  []interface{}{d.Get("hosts")},
+		Hosts:  d.Get("hosts").([]interface{}),
 	}
 	log.Printf("[DEBUG] Pikacloud Instance create configuration: %#v", newInstance)
 
@@ -75,6 +74,7 @@ func resourcePikacloudInstanceRead(d *schema.ResourceData, meta interface{}) err
 
 		return fmt.Errorf("Error retrieving instance: %s", err)
 	}
+	log.Printf("[DEBUG] Pikacloud Instance read: %#v", instance)
 
 	d.Set("region", instance.Region)
 	d.Set("hosts", instance.Hosts)
@@ -113,10 +113,8 @@ func resourcePikacloudInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 		return fmt.Errorf("invalid record ID: %v", err)
 	}
 
-	var updateInstance gopikacloud.InstanceUpdateRequest
-	if h, ok := d.GetOk("hosts"); ok {
-		// updateInstance.Hosts =
-		fmt.Println(h)
+	updateInstance := gopikacloud.InstanceUpdateRequest{
+		Hosts: d.Get("hosts").([]interface{}),
 	}
 
 	log.Printf("[DEBUG] instance update configuration: %#v", updateInstance)
