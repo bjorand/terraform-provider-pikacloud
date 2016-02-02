@@ -23,10 +23,25 @@ func resourcePikacloudInstance() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
+			"certificate": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+				Computed: true,
+			},
 			"hosts": &schema.Schema{
 				Type:     schema.TypeList,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Required: true,
+			},
+			"servers": &schema.Schema{
+				Type:     schema.TypeList,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+				Optional: true,
+				Computed: true,
+			},
+			"dns": &schema.Schema{
+				Type:     schema.TypeString,
+				Computed: true,
 			},
 		},
 	}
@@ -78,6 +93,9 @@ func resourcePikacloudInstanceRead(d *schema.ResourceData, meta interface{}) err
 
 	d.Set("region", instance.Region)
 	d.Set("hosts", instance.Hosts)
+	d.Set("dns", instance.DNS)
+	d.Set("certificate", instance.Certificate)
+	d.Set("servers", instance.Servers)
 	return nil
 }
 
