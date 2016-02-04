@@ -132,7 +132,8 @@ func resourcePikacloudInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	updateInstance := gopikacloud.InstanceUpdateRequest{
-		Hosts: d.Get("hosts").([]interface{}),
+		Hosts:  d.Get("hosts").([]interface{}),
+		Region: d.Get("region").(int),
 	}
 
 	log.Printf("[DEBUG] instance update configuration: %#v", updateInstance)
