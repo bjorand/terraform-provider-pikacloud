@@ -27,7 +27,7 @@ func TestAccPikacloudInstance_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"pikacloud_instance.foobar", "region", "3"),
 					resource.TestCheckResourceAttr(
-						"pikacloud_instance.foobar", "hosts", "toto"),
+						"pikacloud_instance.foobar", "hosts.0", "example.com"),
 				),
 			},
 		},
@@ -56,9 +56,9 @@ func TestAccPikacloudInstance_Update(t *testing.T) {
 					testAccCheckPikacloudInstanceExists("pikacloud_instance.foobar", &instance),
 					testAccCheckPikacloudInstanceChangeHosts(&instance),
 					resource.TestCheckResourceAttr(
-						"pikacloud_instance.foobar", "name", "baz"),
+						"pikacloud_instance.foobar", "region", "3"),
 					resource.TestCheckResourceAttr(
-						"pikacloud_instance.foobar", "size", "1gb"),
+						"pikacloud_instance.foobar", "hosts.0", "foobar.com"),
 				),
 			},
 		},
@@ -98,17 +98,19 @@ func testAccCheckPikacloudInstanceAttributes(instance *gopikacloud.Instance) res
 		if instance.Region != 3 {
 			return fmt.Errorf("Bad region: %d", instance.Region)
 		}
+		if instance.Hosts[0] != "example.com" {
+			return fmt.Errorf("Bad hostname: %d", instance.Hosts[0])
+		}
 		return nil
 	}
 }
 func testAccCheckPikacloudInstanceChangeHosts(instance *gopikacloud.Instance) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-
 		if instance.Region != 3 {
 			return fmt.Errorf("Bad region: %d", instance.Region)
 		}
 
-		if instance.Hosts[0] != "foobar.example" {
+		if instance.Hosts[0] != "foobar.com" {
 			return fmt.Errorf("Bad hostname: %s", instance.Hosts[0])
 		}
 
@@ -163,7 +165,7 @@ func testAccCheckPikacloudInstanceRecreated(t *testing.T,
 
 var testAccCheckPikacloudInstanceConfig_basic = `
 resource "pikacloud_instance" "foobar" {
-  region      = 3
+  region = 3
   hosts  = ["example.com"]
 }
 `

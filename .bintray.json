@@ -1,0 +1,29 @@
+{
+  "package": {
+    "name": "terraform-provider-pikacloud",
+    "repo": "terraform-provider-pikacloud",
+    "subject": "bjorand",
+    "desc": "A Terraform provider for Pikacloud",
+    "website_url": "https://github.com/bjorand/terraform-provider-pikacloud",
+    "issue_tracker_url": "https://github.com/bjorand/terraform-provider-pikacloud/issues",
+    "vcs_url": "https://github.com/bjorand/terraform-provider-pikacloud.git",
+    "licenses": ["MIT"],
+    "labels": ["terraform", "pikacloud", "cloud", "infrastructure", "deployment"],
+    "public_download_numbers": true,
+    "public_stats": true
+  },
+
+  "version": {
+    "name": "0.1",
+    "desc": "This is the 0.1 release.",
+    "released": "2016-01-04",
+    "vcs_tag": "0.1",
+    "gpgSign": false
+  },
+
+  "files": [{
+    "includePattern": "\.\/(terraform-provider-pikacloud_.*)",
+    "uploadPattern": "$1"
+  }],
+  "publish": true
+}
